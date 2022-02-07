@@ -2,13 +2,11 @@ import { getDropDownClass,
          getAllUl     
        } from "./dom.js"
 
-
-
-
 const dropDownMenu = (() => {
 
 
   const hidechildren = (parentUL) => {
+    
     // All ul in li to be hidden
     for (const element of parentUL.children) {
       for (const childElement of element.children) {
@@ -29,7 +27,8 @@ const dropDownMenu = (() => {
         
       })
 
-      element.addEventListener('mouseout', () => {
+      element.addEventListener('mouseleave', (e) => {
+
         hidechildren(parentUL)
       })
     }

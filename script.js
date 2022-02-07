@@ -1,5 +1,5 @@
 import { getDropDownClass,
-         getAllUl       
+         getAllUl     
        } from "./dom.js"
 
 
@@ -7,10 +7,37 @@ import { getDropDownClass,
 
 const dropDownMenu = (() => {
 
-  // Remove default css styling
+
+  const hidechildren = (parentUL) => {
+    // All ul in li to be hidden
+    for (const element of parentUL.children) {
+      for (const childElement of element.children) {
+        if (childElement.nodeName === 'UL'){
+          childElement.style.display = 'none'
+        }
+      }
+    }
+  }
+
+  const hoverControl = (parentUL) => {
+    
+    for (const element of parentUL.children) {
+      element.addEventListener('mouseover', (e) => {
+        for (const element of e.target.children){
+          element.style.display = 'block'
+        }
+        
+      })
+
+      element.addEventListener('mouseout', () => {
+        hidechildren(parentUL)
+      })
+    }
+  }
+
   
   // Drop down menu styling
-  const basicDropDownMenuStyles = (parentUL) => {
+  const DropDownMenuStyles = (parentUL) => {
 
     // Display Flex on child li
     for (const element of parentUL.children) {
@@ -18,6 +45,9 @@ const dropDownMenu = (() => {
       element.style.flexDirection = 'column'
       element.style.justifyContent = 'center'
       element.style.alignItems = 'center'
+      element.addEventListener('mouseover', (e) => {
+        
+      })
     }
 
     // Parent UL Styling
@@ -35,14 +65,17 @@ const dropDownMenu = (() => {
 
 
     // All children UL
-    getAllUl(parentUL).forEach(element =>{
+    getAllUl(parentUL).forEach(element => {
       element.style.listStyle = 'none';
       element.style.padding = '0'
       element.style.margin = '0'
     })
+
+    // All ul in li to be hidden
+    hidechildren(parentUL)
+
+
   }  
-  
-  
 
   const makeDropDown = (() => {
     // For each add-drop-down class
@@ -52,7 +85,10 @@ const dropDownMenu = (() => {
 
         if( element.nodeName === 'UL'){
           // Add Styling
-          basicDropDownMenuStyles(element)
+          DropDownMenuStyles(element)
+
+          // Add Hover Effect
+          hoverControl(element)
         }
       })
 
